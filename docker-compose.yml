@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  main:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=development
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    command: npm run start:dev
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    links:
+      - mysql:database
+    # networks:
+    #   - taxinet
+  mysql:
+    image: mysql:5
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: taxi
+      MYSQL_USER: taxi_server
+      MYSQL_PASSWORD: taxi_server_password
+    ports:
+      - 3306:3306
+    # networks:
+    #   - taxinet
+volumes:
+  db_data:
+# networks:
+#   taxinet:
