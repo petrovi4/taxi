@@ -18,10 +18,6 @@ services:
       - .env
     depends_on:
       - mysql
-    links:
-      - mysql:database
-    # networks:
-    #   - taxinet
   mysql:
     image: mysql:5
     volumes:
@@ -34,9 +30,5 @@ services:
       MYSQL_PASSWORD: taxi_server_password
     ports:
       - 3306:3306
-    # networks:
-    #   - taxinet
 volumes:
   db_data:
-# networks:
-#   taxinet:
