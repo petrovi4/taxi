@@ -2,7 +2,18 @@
 /* eslint-disable */
 
 export type ValueTypes = {
-    ["User"]: AliasType<{
+    ["Car"]: AliasType<{
+	id?:true,
+	number?:true,
+	drivers?:ValueTypes["Driver"],
+	creator?:ValueTypes["User"],
+	created_at?:true,
+	updated_at?:true,
+		__typename?: true
+}>;
+	/** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
+["DateTime"]:unknown;
+	["User"]: AliasType<{
 	id?:true,
 	provider?:true,
 	providerId?:true,
@@ -10,17 +21,7 @@ export type ValueTypes = {
 	name?:true,
 	email?:true,
 	cars?:ValueTypes["Car"],
-	created_at?:true,
-	updated_at?:true,
-		__typename?: true
-}>;
-	/** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
-["DateTime"]:unknown;
-	["Car"]: AliasType<{
-	id?:true,
-	alias?:true,
-	user?:ValueTypes["User"],
-	driver?:ValueTypes["Driver"],
+	drivers?:ValueTypes["Driver"],
 	created_at?:true,
 	updated_at?:true,
 		__typename?: true
@@ -29,6 +30,7 @@ export type ValueTypes = {
 	id?:true,
 	name?:true,
 	cars?:ValueTypes["Car"],
+	creator?:ValueTypes["User"],
 	created_at?:true,
 	updated_at?:true,
 		__typename?: true
@@ -41,13 +43,24 @@ export type ValueTypes = {
 		__typename?: true
 }>;
 	["Mutation"]: AliasType<{
-createCar?: [{	alias:string,	driverName:string},ValueTypes["Car"]],
+createCar?: [{	number:string,	driverName:string},ValueTypes["Car"]],
 		__typename?: true
 }>
   }
 
 export type PartialObjects = {
-    ["User"]: {
+    ["Car"]: {
+		__typename?: "Car";
+			id?:number,
+			number?:string,
+			drivers?:PartialObjects["Driver"][],
+			creator?:PartialObjects["User"],
+			created_at?:PartialObjects["DateTime"],
+			updated_at?:PartialObjects["DateTime"]
+	},
+	/** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
+["DateTime"]:any,
+	["User"]: {
 		__typename?: "User";
 			id?:number,
 			provider?:string,
@@ -56,17 +69,7 @@ export type PartialObjects = {
 			name?:string,
 			email?:string,
 			cars?:PartialObjects["Car"][],
-			created_at?:PartialObjects["DateTime"],
-			updated_at?:PartialObjects["DateTime"]
-	},
-	/** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
-["DateTime"]:any,
-	["Car"]: {
-		__typename?: "Car";
-			id?:number,
-			alias?:string,
-			user?:PartialObjects["User"],
-			driver?:PartialObjects["Driver"],
+			drivers?:PartialObjects["Driver"][],
 			created_at?:PartialObjects["DateTime"],
 			updated_at?:PartialObjects["DateTime"]
 	},
@@ -75,6 +78,7 @@ export type PartialObjects = {
 			id?:number,
 			name?:string,
 			cars?:PartialObjects["Car"][],
+			creator?:PartialObjects["User"],
 			created_at?:PartialObjects["DateTime"],
 			updated_at?:PartialObjects["DateTime"]
 	},
@@ -97,6 +101,19 @@ export type PartialObjects = {
 
 // ------------------------------------------------------
 
+export type Car = {
+	__typename?: "Car",
+	id:number,
+	number:string,
+	drivers?:Driver[],
+	creator:User,
+	created_at:DateTime,
+	updated_at:DateTime
+}
+
+/** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
+export type DateTime = any
+
 export type User = {
 	__typename?: "User",
 	id:number,
@@ -106,19 +123,7 @@ export type User = {
 	name:string,
 	email:string,
 	cars?:Car[],
-	created_at:DateTime,
-	updated_at:DateTime
-}
-
-/** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
-export type DateTime = any
-
-export type Car = {
-	__typename?: "Car",
-	id:number,
-	alias:string,
-	user:User,
-	driver:Driver,
+	drivers?:Driver[],
 	created_at:DateTime,
 	updated_at:DateTime
 }
@@ -128,6 +133,7 @@ export type Driver = {
 	id:number,
 	name:string,
 	cars?:Car[],
+	creator:User,
 	created_at:DateTime,
 	updated_at:DateTime
 }
@@ -149,7 +155,7 @@ export const AllTypesProps: Record<string,any> = {
 	DateTime: "String",
 	Mutation:{
 		createCar:{
-			alias:{
+			number:{
 				type:"String",
 				array:false,
 				arrayRequired:false,
@@ -166,6 +172,14 @@ export const AllTypesProps: Record<string,any> = {
 }
 
 export const ReturnTypes: Record<string,any> = {
+	Car:{
+		id:"Float",
+		number:"String",
+		drivers:"Driver",
+		creator:"User",
+		created_at:"DateTime",
+		updated_at:"DateTime"
+	},
 	User:{
 		id:"Float",
 		provider:"String",
@@ -174,14 +188,7 @@ export const ReturnTypes: Record<string,any> = {
 		name:"String",
 		email:"String",
 		cars:"Car",
-		created_at:"DateTime",
-		updated_at:"DateTime"
-	},
-	Car:{
-		id:"Float",
-		alias:"String",
-		user:"User",
-		driver:"Driver",
+		drivers:"Driver",
 		created_at:"DateTime",
 		updated_at:"DateTime"
 	},
@@ -189,6 +196,7 @@ export const ReturnTypes: Record<string,any> = {
 		id:"Float",
 		name:"String",
 		cars:"Car",
+		creator:"User",
 		created_at:"DateTime",
 		updated_at:"DateTime"
 	},

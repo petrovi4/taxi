@@ -2,13 +2,12 @@ import { Driver } from '../../drivers/driver.entity';
 import { User } from '../../users/user.entity';
 
 export class CreateCarDto {
-	alias: string;
-	user: User;
-	driver: Driver;
+	number: string;
+	creator: User;
 }
 
 export class CreateCarFromDriverDetailsDto {
-	alias: string;
-	user: User;
+	number: string;
+	creator: User;
 	driverName: string;
 }

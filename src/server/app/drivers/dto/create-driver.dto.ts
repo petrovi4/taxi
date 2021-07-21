@@ -1,3 +1,3 @@
 export class CreateDriverDto {
-	name: string;
+  name: string;
 }

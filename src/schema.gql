@@ -2,14 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type Car {
   id: Float!
-  provider: String!
-  providerId: String!
-  username: String!
-  name: String!
-  email: String!
-  cars: [Car]!
+  number: String!
+  drivers: [Driver]!
+  creator: User!
   created_at: DateTime!
   updated_at: DateTime!
 }
@@ -19,11 +16,15 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Car {
+type User {
   id: Float!
-  alias: String!
-  user: User!
-  driver: Driver!
+  provider: String!
+  providerId: String!
+  username: String!
+  name: String!
+  email: String!
+  cars: [Car]!
+  drivers: [Driver]!
   created_at: DateTime!
   updated_at: DateTime!
 }
@@ -32,6 +33,7 @@ type Driver {
   id: Float!
   name: String!
   cars: [Car]!
+  creator: User!
   created_at: DateTime!
   updated_at: DateTime!
 }
@@ -44,5 +46,5 @@ type Query {
 }
 
 type Mutation {
-  createCar(alias: String!, driverName: String!): Car!
+  createCar(number: String!, driverName: String!): Car!
 }

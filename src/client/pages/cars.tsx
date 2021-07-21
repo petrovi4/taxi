@@ -6,12 +6,12 @@ import { typedQuery } from '../app/apollo-client';
 
 export async function getServerSideProps({ req }) {
   const data = await typedQuery(
-    { cars: { alias: true, driver: { name: true } } },
+		{ cars: { number: true, drivers: { name: true } } },
     req,
   );
 
   return {
-    props: { user: (req as Request).user, cars: data.cars },
+		props: { user: (req as Request).user, cars: data.cars },
   };
 }
 

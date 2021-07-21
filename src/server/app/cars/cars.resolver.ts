@@ -25,13 +25,13 @@ export class CarResolver {
 	@Query((_returns) => [Car])
 	@UseGuards(GqlAuthGuard)
 	cars(@CurrentUser() user: User) {
-		return this.carsService.findAll({ where: { user: user } });
+		return this.carsService.findAll({ where: { creator: user } });
 	}
 
 	@ResolveField()
-	driver(@Parent() car: Car) {
-		return this.driversService.findOne({
-			where: { id: car.driver.id },
+	drivers(@Parent() car: Car) {
+		return this.driversService.findAll({
+			// where: { id: car.drivers.map(driver => driver.id) },
 		});
 	}
 
@@ -40,11 +40,11 @@ export class CarResolver {
 	createCar(
 		@CurrentUser() user: User,
 		@Args({ name: 'driverName', type: () => String }) driverName: string,
-		@Args({ name: 'alias', type: () => String }) alias: string,
+		@Args({ name: 'number', type: () => String }) number: string,
 	) {
 		return this.carsService.createFromDriverDetails({
-			alias: alias,
-			user: user,
+			number: number,
+			creator: user,
 			driverName: driverName,
 		});
 	}

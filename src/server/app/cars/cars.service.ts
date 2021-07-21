@@ -22,13 +22,13 @@ export class CarService {
 
 	findOne(params: FindOneOptions<Car> = {}) {
 		return this.carsRepository.findOne(
-			Object.assign({ relations: ['user', 'driver'] }, params),
+			Object.assign({ relations: ['creator', 'drivers'] }, params),
 		);
 	}
 
 	findAll(params: FindManyOptions<Car> = {}) {
 		return this.carsRepository.find(
-			Object.assign({ relations: ['user', 'driver'] }, params),
+			Object.assign({ relations: ['creator', 'drivers'] }, params),
 		);
 	}
 
@@ -39,9 +39,8 @@ export class CarService {
 		if (!car) {
 			const conditions = params.where as CreateCarDto;
 			car = await this.create({
-				alias: conditions.alias,
-				user: conditions.user,
-				driver: conditions.driver,
+				number: conditions.number,
+				creator: conditions.creator,
 			});
 		}
 
@@ -54,7 +53,7 @@ export class CarService {
 		});
 
 		return this.findOrCreateOne({
-			where: { user: params.user, alias: params.alias, driver: driver },
+			where: { creator: params.creator, number: params.number, driver: driver },
 		});
 	}
 }

@@ -89,9 +89,8 @@ describe('CarResolver', () => {
 
 			await resolver.createCar(user, driver.name, alias);
 
-			const carCount = (
-				await carsFactory.findAll({ where: { user: user } })
-			).length;
+			const carCount = (await carsFactory.findAll({ where: { creator: user } }))
+				.length;
 			expect(carCount).toEqual(1);
 		});
 
@@ -103,9 +102,8 @@ describe('CarResolver', () => {
 			await resolver.createCar(user, driver.name, alias);
 			await resolver.createCar(user, driver.name, alias);
 
-			const carCount = (
-				await carsFactory.findAll({ where: { user: user } })
-			).length;
+			const carCount = (await carsFactory.findAll({ where: { creator: user } }))
+				.length;
 			expect(carCount).toEqual(1);
 		});
 	});

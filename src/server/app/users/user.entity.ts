@@ -9,6 +9,7 @@ import {
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Provider } from 'src/server/common/types/user';
 import { Car } from '../cars/car.entity';
+import { Driver } from '../drivers/driver.entity';
 
 @ObjectType()
 @Entity()
@@ -38,8 +39,12 @@ export class User {
 	email?: string;
 
 	@Field((_type) => [Car], { nullable: 'items' })
-	@OneToMany((_type) => Car, (car) => car.user)
+	@OneToMany((_type) => Car, (car) => car.creator)
 	cars?: Car[];
+
+	@Field((_type) => [Driver], { nullable: 'items' })
+	@OneToMany((_type) => Driver, (driver) => driver.creator)
+	drivers?: Driver[];
 
 	@Field()
 	@Column()

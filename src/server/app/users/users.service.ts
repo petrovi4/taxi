@@ -8,28 +8,28 @@ import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
-	constructor(
-		@InjectRepository(User)
-		private usersRepository: Repository<User>,
-	) {}
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+  ) {}
 
-	create(user: CreateUserDto) {
-		return this.usersRepository.save(user);
-	}
+  create(user: CreateUserDto) {
+    return this.usersRepository.save(user);
+  }
 
-	findOne(id: number) {
-		return this.usersRepository.findOne(id);
-	}
+  findOne(id: number) {
+    return this.usersRepository.findOne(id);
+  }
 
-	findOneByProvider(provider: Provider, providerId: string) {
-		return this.usersRepository.findOne({ where: { provider, providerId } });
-	}
+  findOneByProvider(provider: Provider, providerId: string) {
+    return this.usersRepository.findOne({ where: { provider, providerId } });
+  }
 
-	findOneByProviderAndUsername(providerId: string, username: string) {
-		return this.usersRepository.findOne({ where: { providerId, username } });
-	}
+  findOneByProviderAndUsername(providerId: string, username: string) {
+    return this.usersRepository.findOne({ where: { providerId, username } });
+  }
 
-	findAll(params: FindManyOptions<User> = {}) {
-		return this.usersRepository.find(params);
-	}
+  findAll(params: FindManyOptions<User> = {}) {
+    return this.usersRepository.find(params);
+  }
 }

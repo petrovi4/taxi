@@ -7,20 +7,20 @@ import { CreateDriverDto } from './dto/create-driver.dto';
 
 @Injectable()
 export class DriversService {
-	constructor(
-		@InjectRepository(Driver)
-		private driversRepository: Repository<Driver>,
-	) {}
+  constructor(
+    @InjectRepository(Driver)
+    private driversRepository: Repository<Driver>,
+  ) {}
 
-	create(driver: CreateDriverDto) {
-		return this.driversRepository.save(driver);
-	}
+  create(driver: CreateDriverDto) {
+    return this.driversRepository.save(driver);
+  }
 
-	findOne(params: FindOneOptions<Driver> = {}) {
-		return this.driversRepository.findOne(params);
-	}
+  findOne(params: FindOneOptions<Driver> = {}) {
+    return this.driversRepository.findOne(params);
+  }
 
-	findAll(params: FindManyOptions<Driver> = {}) {
-		return this.driversRepository.find(params);
-	}
+  findAll(params: FindManyOptions<Driver> = {}) {
+    return this.driversRepository.find(params);
+  }
 }

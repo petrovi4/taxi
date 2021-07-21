@@ -5,8 +5,12 @@ import {
 	CreateDateColumn,
 	UpdateDateColumn,
 	OneToMany,
+	ManyToMany,
+	JoinTable,
+	ManyToOne,
 } from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
+import { User } from '../users/user.entity';
 import { Car } from '../cars/car.entity';
 
 @ObjectType()
@@ -21,8 +25,13 @@ export class Driver {
 	name: string;
 
 	@Field((_type) => [Car], { nullable: 'items' })
-	@OneToMany((_type) => Car, (car) => car.driver)
-	cars?: Car[];
+	@ManyToMany(() => Car)
+	@JoinTable()
+	cars: Car[];
+
+	@Field((_type) => User)
+	@ManyToOne((_type) => User, (user) => user.drivers, { nullable: false })
+	creator: User;
 
 	@Field()
 	@Column()

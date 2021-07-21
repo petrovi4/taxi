@@ -6,10 +6,10 @@ import { DriversService } from './drivers.service';
 
 @Resolver((_of) => Driver)
 export class DriversResolver {
-	constructor(@Inject(DriversService) private driversService: DriversService) {}
+  constructor(@Inject(DriversService) private driversService: DriversService) {}
 
-	@Query((_returns) => [Driver])
-	async drivers(params: FindManyOptions<Driver> = {}): Promise<Driver[]> {
-		return this.driversService.findAll(params);
-	}
+  @Query((_returns) => [Driver])
+  async drivers(params: FindManyOptions<Driver> = {}): Promise<Driver[]> {
+    return this.driversService.findAll(params);
+  }
 }
