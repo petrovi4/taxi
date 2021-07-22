@@ -7,7 +7,7 @@ import { Car } from './car.entity';
 import { DriversModule } from '../drivers/drivers.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Car]), DriversModule],
-  providers: [CarService, CarResolver],
+	imports: [TypeOrmModule.forFeature([Car]), DriversModule],
+	providers: [CarService, CarResolver],
 })
 export class CarsModule {}

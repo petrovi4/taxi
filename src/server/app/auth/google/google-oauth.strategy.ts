@@ -6,35 +6,35 @@ import { UsersService } from '../../users/users.service';
 
 @Injectable()
 export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor(
-    configService: ConfigService,
-    private readonly usersService: UsersService,
-  ) {
-    super({
-      clientID: configService.get<string>('OAUTH_GOOGLE_ID'),
-      clientSecret: configService.get<string>('OAUTH_GOOGLE_SECRET'),
-      callbackURL: configService.get<string>('OAUTH_GOOGLE_REDIRECT_URL'),
-      scope: ['email', 'profile'],
-    });
-  }
+	constructor(
+		configService: ConfigService,
+		private readonly usersService: UsersService,
+	) {
+		super({
+			clientID: configService.get<string>('OAUTH_GOOGLE_ID'),
+			clientSecret: configService.get<string>('OAUTH_GOOGLE_SECRET'),
+			callbackURL: configService.get<string>('OAUTH_GOOGLE_REDIRECT_URL'),
+			scope: ['email', 'profile'],
+		});
+	}
 
-  async validate(
-    _accessToken: string,
-    _refreshToken: string,
-    profile: Profile,
-  ) {
-    const { id, name, emails } = profile;
+	async validate(
+		_accessToken: string,
+		_refreshToken: string,
+		profile: Profile,
+	) {
+		const { id, name, emails } = profile;
 
-    let user = await this.usersService.findOneByProvider('google', id);
-    if (!user) {
-      user = await this.usersService.create({
-        provider: 'google',
-        providerId: id,
-        name: name.givenName,
-        username: emails[0].value,
-      });
-    }
+		let user = await this.usersService.findOneByProvider('google', id);
+		if (!user) {
+			user = await this.usersService.create({
+				provider: 'google',
+				providerId: id,
+				name: name.givenName,
+				username: emails[0].value,
+			});
+		}
 
-    return user;
-  }
+		return user;
+	}
 }

@@ -7,13 +7,13 @@ import { AuthController } from './auth.controller';
 import { CognitoOauthModule } from './cognito/cognito-oauth.module';
 
 @Module({
-  controllers: [AuthController],
-  imports: [
-    UsersModule,
-    PassportModule,
-    // GoogleOauthModule,
-    JwtAuthModule,
-    CognitoOauthModule,
-  ],
+	controllers: [AuthController],
+	imports: [
+		UsersModule,
+		PassportModule,
+		// GoogleOauthModule,
+		JwtAuthModule,
+		CognitoOauthModule,
+	],
 })
 export class AuthModule {}

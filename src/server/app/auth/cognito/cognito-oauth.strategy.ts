@@ -8,78 +8,78 @@ import { UsersService } from '../../users/users.service';
 
 @Injectable()
 export class CognitoOauthStrategy extends PassportStrategy(
-  Strategy,
-  'cognito',
+	Strategy,
+	'cognito',
 ) {
-  private domain: string;
-  private region: string;
+	private domain: string;
+	private region: string;
 
-  constructor(
-    configService: ConfigService,
-    private readonly usersService: UsersService,
-  ) {
-    super({
-      authorizationURL: CognitoOauthStrategy.authorizationUrl(
-        configService.get<string>('OAUTH_COGNITO_DOMAIN'),
-        configService.get<string>('OAUTH_COGNITO_REGION'),
-      ),
-      tokenURL: CognitoOauthStrategy.tokenUrl(
-        configService.get<string>('OAUTH_COGNITO_DOMAIN'),
-        configService.get<string>('OAUTH_COGNITO_REGION'),
-      ),
-      clientID: configService.get<string>('OAUTH_COGNITO_ID'),
-      clientSecret: configService.get<string>('OAUTH_COGNITO_SECRET'),
-      callbackURL: configService.get<string>('OAUTH_COGNITO_REDIRECT_URL'),
-    });
-    this.domain = configService.get<string>('OAUTH_COGNITO_DOMAIN');
-    this.region = configService.get<string>('OAUTH_COGNITO_REGION');
-  }
+	constructor(
+		configService: ConfigService,
+		private readonly usersService: UsersService,
+	) {
+		super({
+			authorizationURL: CognitoOauthStrategy.authorizationUrl(
+				configService.get<string>('OAUTH_COGNITO_DOMAIN'),
+				configService.get<string>('OAUTH_COGNITO_REGION'),
+			),
+			tokenURL: CognitoOauthStrategy.tokenUrl(
+				configService.get<string>('OAUTH_COGNITO_DOMAIN'),
+				configService.get<string>('OAUTH_COGNITO_REGION'),
+			),
+			clientID: configService.get<string>('OAUTH_COGNITO_ID'),
+			clientSecret: configService.get<string>('OAUTH_COGNITO_SECRET'),
+			callbackURL: configService.get<string>('OAUTH_COGNITO_REDIRECT_URL'),
+		});
+		this.domain = configService.get<string>('OAUTH_COGNITO_DOMAIN');
+		this.region = configService.get<string>('OAUTH_COGNITO_REGION');
+	}
 
-  static baseUrl(domain: string, region: string): string {
-    return `https://${domain}.auth.${region}.amazoncognito.com/oauth2`;
-  }
+	static baseUrl(domain: string, region: string): string {
+		return `https://${domain}.auth.${region}.amazoncognito.com/oauth2`;
+	}
 
-  static authorizationUrl(domain: string, region: string): string {
-    return `${this.baseUrl(domain, region)}/authorize`;
-  }
+	static authorizationUrl(domain: string, region: string): string {
+		return `${this.baseUrl(domain, region)}/authorize`;
+	}
 
-  static tokenUrl(domain: string, region: string): string {
-    return `${this.baseUrl(domain, region)}/token`;
-  }
+	static tokenUrl(domain: string, region: string): string {
+		return `${this.baseUrl(domain, region)}/token`;
+	}
 
-  static userInfoUrl(domain: string, region: string): string {
-    return `${this.baseUrl(domain, region)}/userInfo`;
-  }
+	static userInfoUrl(domain: string, region: string): string {
+		return `${this.baseUrl(domain, region)}/userInfo`;
+	}
 
-  async validate(accessToken: string) {
-    // Here the `id_token` is also received: https://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html
-    // But it's not supported by passport-oauth2, only `access_token` is received
-    // Therefore another call is made to the userinfo endpoint
-    const userinfo = (
-      await axios.get(
-        CognitoOauthStrategy.userInfoUrl(this.domain, this.region),
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-      )
-    ).data;
+	async validate(accessToken: string) {
+		// Here the `id_token` is also received: https://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html
+		// But it's not supported by passport-oauth2, only `access_token` is received
+		// Therefore another call is made to the userinfo endpoint
+		const userinfo = (
+			await axios.get(
+				CognitoOauthStrategy.userInfoUrl(this.domain, this.region),
+				{ headers: { Authorization: `Bearer ${accessToken}` } },
+			)
+		).data;
 
-    const [provider, providerId] = userinfo.username.includes('_')
-      ? userinfo.username.split('_')
-      : ['unknown', 'unknown'];
+		const [provider, providerId] = userinfo.username.includes('_')
+			? userinfo.username.split('_')
+			: ['unknown', 'unknown'];
 
-    let user = await this.usersService.findOneByProviderAndUsername(
-      providerId,
-      userinfo.username,
-    );
-    if (!user) {
-      user = await this.usersService.create({
-        provider,
-        providerId,
-        username: userinfo.username,
-        name: userinfo.name,
-        email: userinfo.email,
-      });
-    }
+		let user = await this.usersService.findOneByProviderAndUsername(
+			providerId,
+			userinfo.username,
+		);
+		if (!user) {
+			user = await this.usersService.create({
+				provider,
+				providerId,
+				username: userinfo.username,
+				name: userinfo.name,
+				email: userinfo.email,
+			});
+		}
 
-    return user;
-  }
+		return user;
+	}
 }

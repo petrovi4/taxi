@@ -5,8 +5,8 @@ import { GoogleOauthController } from './google-oauth.controller';
 import { GoogleOauthStrategy } from './google-oauth.strategy';
 
 @Module({
-  imports: [UsersModule, JwtAuthModule],
-  controllers: [GoogleOauthController],
-  providers: [GoogleOauthStrategy],
+	imports: [UsersModule, JwtAuthModule],
+	controllers: [GoogleOauthController],
+	providers: [GoogleOauthStrategy],
 })
 export class GoogleOauthModule {}

@@ -5,19 +5,19 @@ import { CognitoOauthGuard } from './cognito-oauth.guard';
 
 @Controller('auth/cognito')
 export class CognitoOauthController {
-  constructor(private jwtAuthService: JwtAuthService) {}
+	constructor(private jwtAuthService: JwtAuthService) {}
 
-  @Get()
-  @UseGuards(CognitoOauthGuard)
-  async cognitoAuth(@Req() _req) {
-    // Guard redirects
-  }
+	@Get()
+	@UseGuards(CognitoOauthGuard)
+	async cognitoAuth(@Req() _req) {
+		// Guard redirects
+	}
 
-  @Get('redirect')
-  @UseGuards(CognitoOauthGuard)
-  async cognitoAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    const { accessToken } = this.jwtAuthService.login(req.user);
-    res.cookie('jwt', accessToken);
-    return res.redirect('/profile');
-  }
+	@Get('redirect')
+	@UseGuards(CognitoOauthGuard)
+	async cognitoAuthRedirect(@Req() req: Request, @Res() res: Response) {
+		const { accessToken } = this.jwtAuthService.login(req.user);
+		res.cookie('jwt', accessToken);
+		return res.redirect('/profile');
+	}
 }

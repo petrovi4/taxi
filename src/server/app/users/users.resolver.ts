@@ -8,16 +8,16 @@ import { CurrentUser } from '../auth/graphql/gql-auth.decorator';
 
 @Resolver((_of) => User)
 export class UsersResolver {
-  constructor(@Inject(UsersService) private usersService: UsersService) {}
+	constructor(@Inject(UsersService) private usersService: UsersService) {}
 
-  @Query((_returns) => [User])
-  async users(params: FindManyOptions<User> = {}): Promise<User[]> {
-    return this.usersService.findAll(params);
-  }
+	@Query((_returns) => [User])
+	async users(params: FindManyOptions<User> = {}): Promise<User[]> {
+		return this.usersService.findAll(params);
+	}
 
-  @Query((_returns) => User)
-  @UseGuards(GqlAuthGuard)
-  whoAmI(@CurrentUser() user: User) {
-    return this.usersService.findOne(user.id);
-  }
+	@Query((_returns) => User)
+	@UseGuards(GqlAuthGuard)
+	whoAmI(@CurrentUser() user: User) {
+		return this.usersService.findOne(user.id);
+	}
 }

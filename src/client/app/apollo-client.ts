@@ -17,7 +17,10 @@ export const context = (req: Request) => {
 	};
 };
 
-export const typedQuery = async <Q extends ValueTypes['Query']>(query: Q, req: Request) => {
+export const typedQuery = async <Q extends ValueTypes['Query']>(
+	query: Q,
+	req: Request,
+) => {
 	const { data } = await client.query({
 		query: gql(Zeus.query(query)),
 		context: context(req),

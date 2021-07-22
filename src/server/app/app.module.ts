@@ -16,26 +16,26 @@ import { DriversModule } from './drivers/drivers.module';
 import { CarsModule } from './cars/cars.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-    GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-    }),
-    TypeOrmModule.forRootAsync({
-      useFactory: async () =>
-        Object.assign(await getConnectionOptions(), {
-          autoLoadEntities: true,
-        }),
-    }),
-    ConsoleModule,
-    AuthModule,
-    UsersModule,
-    DriversModule,
-    CarsModule,
-  ],
-  providers: [SeedService, AppService],
-  controllers: [AppController],
+	imports: [
+		ConfigModule.forRoot({
+			isGlobal: true,
+		}),
+		GraphQLModule.forRoot({
+			autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+		}),
+		TypeOrmModule.forRootAsync({
+			useFactory: async () =>
+				Object.assign(await getConnectionOptions(), {
+					autoLoadEntities: true,
+				}),
+		}),
+		ConsoleModule,
+		AuthModule,
+		UsersModule,
+		DriversModule,
+		CarsModule,
+	],
+	providers: [SeedService, AppService],
+	controllers: [AppController],
 })
 export class AppModule {}
